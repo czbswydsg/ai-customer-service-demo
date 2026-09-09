@@ -1,47 +1,103 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "AI Customer Service Evaluation Set V1.1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/evaluation-set-v1.1.schema.json",
   "type": "object",
-  "required": ["meta", "knowledge_base", "badcase_categories", "statistics", "cases"],
+  "required": [
+    "meta",
+    "knowledge_base",
+    "badcase_categories",
+    "statistics",
+    "cases"
+  ],
   "properties": {
     "meta": {
       "type": "object",
-      "required": ["version", "title", "purpose", "case_count", "scoring"],
+      "required": [
+        "version",
+        "title",
+        "purpose",
+        "case_count",
+        "scoring",
+        "source_system"
+      ],
       "properties": {
-        "version": {"type": "string"},
-        "title": {"type": "string"},
-        "purpose": {"type": "string"},
-        "case_count": {"type": "integer", "minimum": 1},
-        "description": {"type": "string"},
-        "data_note": {"type": "string"},
-        "scoring": {
-          "type": "object",
-          "required": ["formula", "decision"],
-          "properties": {
-            "formula": {"type": "string"},
-            "decision": {"type": "string"},
-            "high_severity_principle": {"type": "string"}
-          }
+        "version": {
+          "type": "string"
         },
-        "source_system": {"type": "array", "items": {"type": "string"}}
+        "title": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "case_count": {
+          "type": "integer",
+          "const": 50
+        },
+        "description": {
+          "type": "string"
+        },
+        "data_note": {
+          "type": "string"
+        },
+        "scoring": {
+          "type": "object"
+        },
+        "source_system": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "knowledge_base": {
       "type": "array",
+      "minItems": 10,
       "items": {
         "type": "object",
-        "required": ["id", "name", "core", "source_type", "source", "scope"],
+        "required": [
+          "id",
+          "name",
+          "core",
+          "source_type",
+          "source",
+          "scope",
+          "risk",
+          "cases"
+        ],
         "properties": {
-          "id": {"type": "string", "pattern": "^KB\\d{3}$"},
-          "name": {"type": "string"},
-          "core": {"type": "string"},
-          "source_type": {"type": "string", "enum": ["法律法规", "平台官方规则", "官方流程/帮助中心", "项目策略"]},
-          "source": {"type": "string"},
-          "scope": {"type": "string"},
-          "risk": {"type": "string", "enum": ["低", "中", "高", "中/高"]},
-          "cases": {"type": "string"},
-          "url": {"type": "string"},
-          "conclusion": {"type": "string"}
+          "id": {
+            "type": "string",
+            "pattern": "^KB\\d{3}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "core": {
+            "type": "string"
+          },
+          "source_type": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "string"
+          },
+          "risk": {
+            "type": "string"
+          },
+          "cases": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "conclusion": {
+            "type": "string"
+          }
         }
       }
     },
@@ -49,67 +105,189 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["level1", "level2", "definition", "fix", "cases"],
+        "required": [
+          "level1",
+          "level2",
+          "definition",
+          "fix",
+          "cases"
+        ],
         "properties": {
-          "level1": {"type": "string"},
-          "level2": {"type": "string"},
-          "definition": {"type": "string"},
-          "fix": {"type": "string"},
-          "cases": {"type": "string"}
+          "level1": {
+            "type": "string"
+          },
+          "level2": {
+            "type": "string"
+          },
+          "definition": {
+            "type": "string"
+          },
+          "fix": {
+            "type": "string"
+          },
+          "cases": {
+            "type": "string"
+          }
         }
       }
     },
     "statistics": {
       "type": "object",
-      "required": ["total_cases", "correct", "error", "average_score", "high_severity_count", "error_rate"],
-      "properties": {
-        "total_cases": {"type": "integer"},
-        "correct": {"type": "integer"},
-        "error": {"type": "integer"},
-        "average_score": {"type": "number"},
-        "high_severity_count": {"type": "integer"},
-        "error_rate": {"type": "number"},
-        "formula": {"type": "string"},
-        "scenes": {"type": "array"}
-      }
+      "required": [
+        "total_cases",
+        "correct",
+        "error",
+        "average_score",
+        "high_severity_count",
+        "error_rate",
+        "formula",
+        "scenes"
+      ]
     },
     "cases": {
       "type": "array",
       "minItems": 50,
+      "maxItems": 50,
       "items": {
-        "type": "object",
-        "required": ["id", "user_question", "ai_answer", "standard_answer", "judgment", "high_severity", "scores"],
-        "properties": {
-          "id": {"type": "string", "pattern": "^QC\\d{3}$"},
-          "scene_major": {"type": "string"},
-          "risk_scene": {"type": "string"},
-          "risk_level": {"type": "string", "enum": ["低", "中", "高"]},
-          "user_question": {"type": "string"},
-          "ai_answer": {"type": "string"},
-          "standard_answer": {"type": "string"},
-          "ground_truth_source": {"type": "string"},
-          "source_type": {"type": "string"},
-          "scope": {"type": "string"},
-          "validation_target": {"type": "string"},
-          "error_type": {"type": "string"},
-          "badcase_category": {"type": "string"},
-          "high_severity": {"type": "string", "enum": ["是", "否"]},
-          "judgment": {"type": "string", "enum": ["正确", "错误"]},
-          "audit_note": {"type": "string"},
-          "scores": {
-            "type": "object",
-            "required": ["classification", "risk", "evidence", "boundary", "human", "resolution", "raw_total", "total_100"],
-            "properties": {
-              "classification": {"type": "number"},
-              "risk": {"type": "number"},
-              "evidence": {"type": "number"},
-              "boundary": {"type": "number"},
-              "human": {"type": "number"},
-              "resolution": {"type": "number"},
-              "raw_total": {"type": "number"},
-              "total_100": {"type": "number"}
+        "$ref": "#/$defs/case"
+      }
+    }
+  },
+  "$defs": {
+    "case": {
+      "type": "object",
+      "required": [
+        "id",
+        "risk_scene",
+        "risk_level",
+        "user_question",
+        "ai_answer",
+        "standard_answer",
+        "ground_truth_source",
+        "source_type",
+        "scope",
+        "validation_target",
+        "error_type",
+        "badcase_category",
+        "scores",
+        "high_severity",
+        "judgment",
+        "audit_note"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^QC\\d{3}$"
+        },
+        "risk_scene": {
+          "type": "string"
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": [
+            "低",
+            "中",
+            "高"
+          ]
+        },
+        "user_question": {
+          "type": "string"
+        },
+        "ai_answer": {
+          "type": "string"
+        },
+        "standard_answer": {
+          "type": "string"
+        },
+        "ground_truth_source": {
+          "type": "string"
+        },
+        "source_type": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "validation_target": {
+          "type": "string"
+        },
+        "error_type": {
+          "type": "string"
+        },
+        "badcase_category": {
+          "type": "string"
+        },
+        "scores": {
+          "type": "object",
+          "required": [
+            "classification",
+            "risk",
+            "evidence",
+            "boundary",
+            "human",
+            "resolution",
+            "raw_total",
+            "total_100"
+          ],
+          "properties": {
+            "classification": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "risk": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "evidence": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "boundary": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "human": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "resolution": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 20
+            },
+            "raw_total": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 120
+            },
+            "total_100": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
             }
           }
+        },
+        "high_severity": {
+          "type": "string",
+          "enum": [
+            "是",
+            "否"
+          ]
+        },
+        "judgment": {
+          "type": "string",
+          "enum": [
+            "正确",
+            "错误"
+          ]
+        },
+        "audit_note": {
+          "type": "string"
         }
       }
     }
