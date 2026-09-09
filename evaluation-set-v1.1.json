@@ -1,0 +1,186 @@
+{
+  "meta": {
+    "version": "V1.1",
+    "title": "电商AI客服质检测评用例集 V1.1",
+    "purpose": "Evaluation Set / Ground Truth 审计版",
+    "case_count": 50,
+    "description": "基于法律法规、平台官方规则、官方流程文档及项目策略建立Ground Truth，用于AI客服质量评测。",
+    "data_note": "本项目未使用真实企业客服数据；用例根据公开法律法规、平台官方规则及项目策略构造，用于验证产品方案与评测机制。",
+    "scoring": {
+      "formula": "六项原始得分之和 ÷ 120 × 100",
+      "decision": "质检总分<75 或 高严重度错误=是 → 错误",
+      "high_severity_principle": "幻觉编造、明显合规风险、高风险投诉/异常场景未按项目策略兜底等可标记为高严重度。"
+    },
+    "source_system": [
+      "法律法规",
+      "平台官方规则",
+      "官方流程或帮助中心",
+      "项目策略"
+    ]
+  },
+  "knowledge_base": [
+    {
+      "id": "KB001",
+      "name": "七日无理由退货",
+      "core": "网络销售商品原则上7日无理由退货，但存在法定及商品性质例外，退货商品应保持完好。",
+      "source_type": "法律法规",
+      "source": "《消费者权益保护法》第25条",
+      "scope": "网络销售商品",
+      "risk": "中",
+      "cases": "QC001;QC026",
+      "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_0a323e046fba43f0b6e9e977f1e8d5fc.html",
+      "conclusion": "可作为法规Ground Truth；不要把所有特殊商品一概归为\"不能退\"。"
+    },
+    {
+      "id": "KB002",
+      "name": "质量问题退换修",
+      "core": "商品不符合质量要求时可依国家规定/约定退货、换货、修理；相关运输等必要费用由经营者承担。",
+      "source_type": "法律法规",
+      "source": "《消费者权益保护法》第24条",
+      "scope": "网络销售商品",
+      "risk": "高",
+      "cases": "QC005;QC007",
+      "url": "https://www.samr.gov.cn/zw/zfxxgk/fdzdgknr/fgs/art/2023/art_0a323e046fba43f0b6e9e977f1e8d5fc.html",
+      "conclusion": "可作为质量问题与运费判断的法律基础。"
+    },
+    {
+      "id": "KB003",
+      "name": "京东15日换货",
+      "core": "京东相应售后规则存在15日内换货机制，具体以商品/订单适用规则为准。",
+      "source_type": "平台官方规则",
+      "source": "京东自营商品售后政策服务总则",
+      "scope": "京东平台具体商品",
+      "risk": "中",
+      "cases": "QC001;QC013",
+      "url": "https://help.jd.com/user/issue/327-988.html",
+      "conclusion": "不是全电商平台通用规则。"
+    },
+    {
+      "id": "KB004",
+      "name": "手机数码售后",
+      "core": "手机数码类存在7日退货、15日换货等规则，并有特殊商品/激活信息等注意事项，具体以页面和规则为准。",
+      "source_type": "平台官方规则",
+      "source": "京东手机、数码、IT类商品售后服务细则（自营）",
+      "scope": "手机、数码、IT",
+      "risk": "高",
+      "cases": "QC001",
+      "url": "https://help.jd.com/user/issue/325-915.html",
+      "conclusion": "不能简化为\"所有激活手机一律不可退\"。"
+    },
+    {
+      "id": "KB005",
+      "name": "服饰售后",
+      "core": "服饰鞋帽类存在7日退货、15日换货规则及商品完好等特殊条件。",
+      "source_type": "平台官方规则",
+      "source": "京东服饰鞋帽类商品售后服务细则（自营）",
+      "scope": "服饰鞋帽",
+      "risk": "高",
+      "cases": "QC008",
+      "url": "https://help.jd.com/user/issue/325-928.html",
+      "conclusion": "适合支撑质量争议与商品完好判断。"
+    },
+    {
+      "id": "KB006",
+      "name": "价保",
+      "core": "价保资格、期限和申请路径因具体服务类型/商品而异，需以页面标识与实际规则为准。",
+      "source_type": "平台官方规则",
+      "source": "京东价格保护官方规则",
+      "scope": "具体商品/订单",
+      "risk": "高",
+      "cases": "QC035",
+      "url": "https://help.jd.com/user/issue/292-4272.html",
+      "conclusion": "不要统一写成\"所有商品都有价保\"或固定天数。"
+    },
+    {
+      "id": "KB007",
+      "name": "送货上门",
+      "core": "京东送货上门受地址、环境、第三方配送等条件影响；不宜绝对化承诺。",
+      "source_type": "平台官方规则",
+      "source": "京东送货上门服务说明",
+      "scope": "京东配送",
+      "risk": "中",
+      "cases": "QC042;QC044;QC050",
+      "url": "https://help.jd.com/user/issue/254-4130.html",
+      "conclusion": "适合支撑配送服务边界。"
+    },
+    {
+      "id": "KB008",
+      "name": "物流查询",
+      "core": "物流轨迹以订单页面及快递实际更新为准；AI只有在具备工具/接口时才能声称可实时查询。",
+      "source_type": "官方流程/帮助中心",
+      "source": "京东订单/物流查询帮助",
+      "scope": "京东物流",
+      "risk": "中",
+      "cases": "QC039;QC043;QC47;QC049",
+      "url": "https://help.jd.com/user/issue/",
+      "conclusion": "项目中需区分\"提示用户查看\"与\"系统实际查询\"。"
+    },
+    {
+      "id": "KB009",
+      "name": "高风险转人工",
+      "core": "假货指控、强烈投诉、明确要求升级/领导等场景进入人工兜底。",
+      "source_type": "项目策略",
+      "source": "本项目 AI 风险控制规则 V1.0",
+      "scope": "AI客服",
+      "risk": "高",
+      "cases": "QC009;QC010;QC011;QC040",
+      "url": "",
+      "conclusion": "属于产品策略，不是法律强制。"
+    },
+    {
+      "id": "KB010",
+      "name": "防幻觉",
+      "core": "缺少具体商品/订单/评价数据时，不得编造参数、库存、优惠、评价、时效或赔付。",
+      "source_type": "项目策略",
+      "source": "本项目 AI 防幻觉规则 V1.0",
+      "scope": "AI客服",
+      "risk": "中/高",
+      "cases": "QC014;QC015;QC017;QC020;QC028;QC032;QC038;QC045",
+      "url": "",
+      "conclusion": "适合作为Eval的统一模型行为约束。"
+    }
+  ],
+  "badcase_categories": [
+    {"level1": "知识库缺失", "level2": "规则缺失", "definition": "知识库没有收录相关业务规则，导致回答不完整或无法回答。", "fix": "补充规则/检索召回", "cases": "QC003;QC015"},
+    {"level1": "知识库缺失", "level2": "时效缺失", "definition": "缺少时效依据，或把非固定时效写成固定值。", "fix": "补充时效字段并限定适用范围", "cases": "QC004;QC013"},
+    {"level1": "知识库缺失", "level2": "流程缺失", "definition": "缺少具体操作路径，用户不知道下一步怎么做。", "fix": "补充官方流程/页面入口", "cases": "QC003;QC039"},
+    {"level1": "知识库缺失", "level2": "参数缺失", "definition": "缺少商品参数、尺码、功率等具体商品数据。", "fix": "补充结构化商品参数/RAG", "cases": "QC014;QC017;QC021;QC036"},
+    {"level1": "幻觉编造", "level2": "编造规则", "definition": "虚构不存在的平台/法律规则。", "fix": "证据约束 + 引用检查", "cases": "QC038"},
+    {"level1": "幻觉编造", "level2": "编造时效", "definition": "无依据给出固定物流/退款/发货时效。", "fix": "时效字段化 + 来源绑定", "cases": "QC045"},
+    {"level1": "幻觉编造", "level2": "编造承诺", "definition": "虚构优惠、赔偿、包邮等结果性承诺。", "fix": "禁止固定承诺 + 页面证据", "cases": "QC005;QC028"},
+    {"level1": "幻觉编造", "level2": "编造数据", "definition": "虚构评价、销量、商品参数等事实数据。", "fix": "实时数据调用或明确未知", "cases": "QC032;QC020"},
+    {"level1": "答非所问", "level2": "意图识别错误", "definition": "没有识别用户真实问题类型。", "fix": "意图分类/槽位抽取优化", "cases": "QC006"},
+    {"level1": "答非所问", "level2": "上下文丢失", "definition": "多轮对话中丢失已知上下文。", "fix": "增加对话状态/记忆", "cases": "示例：需构造多轮Case"},
+    {"level1": "答非所问", "level2": "答非所问", "definition": "回答与用户当前问题无关。", "fix": "重做意图识别与路由", "cases": "QC007"},
+    {"level1": "未转人工", "level2": "高风险未转", "definition": "高风险争议未进入人工兜底。", "fix": "增加风险路由阈值", "cases": "QC010;QC040"},
+    {"level1": "未转人工", "level2": "情绪激动未转", "definition": "用户明确要求升级/领导或情绪显著升级但未转人工。", "fix": "情绪+升级意图联合判定", "cases": "QC011"},
+    {"level1": "未转人工", "level2": "复杂问题未转", "definition": "超出AI能力范围但没有升级人工。", "fix": "能力边界检测", "cases": "可在V1.1补充"},
+    {"level1": "语气不当", "level2": "指责用户", "definition": "指责/怪罪用户，或攻击性语言。", "fix": "增加客服语气约束", "cases": "QC008;QC044"},
+    {"level1": "语气不当", "level2": "冷漠敷衍", "definition": "缺乏共情、消极拒答、阻断问题解决。", "fix": "共情话术 + 下一步动作", "cases": "QC009"},
+    {"level1": "越权合规", "level2": "越权操作", "definition": "AI承诺修改订单、赔偿、退款等自身无权限行为。", "fix": "工具权限隔离 + 承诺拦截", "cases": "可在V1.1补充"},
+    {"level1": "越权合规", "level2": "绝对化表述", "definition": "使用\"保证、一定、所有\"等无条件表述。", "fix": "绝对化检测规则", "cases": "QC005;QC044"}
+  ],
+  "statistics": {
+    "total_cases": 50,
+    "correct": 31,
+    "error": 19,
+    "average_score": 70.4,
+    "high_severity_count": 12,
+    "error_rate": 0.4,
+    "formula": "六项原始分 ÷ 120 × 100",
+    "scenes": [
+      {"name": "破损退款", "count": 10, "correct": 3, "error": 7, "avg": 52.5, "high_severity": 3},
+      {"name": "价保补差", "count": 3, "correct": 3, "error": 0, "avg": 96.1, "high_severity": 0},
+      {"name": "恶意差评", "count": 3, "correct": 0, "error": 3, "avg": 16.1, "high_severity": 3},
+      {"name": "物流拦截", "count": 10, "correct": 6, "error": 4, "avg": 76.8, "high_severity": 3},
+      {"name": "优惠券叠加", "count": 3, "correct": 2, "error": 1, "avg": 73.3, "high_severity": 1},
+      {"name": "错发货", "count": 2, "correct": 0, "error": 2, "avg": 32.5, "high_severity": 1},
+      {"name": "商品咨询", "count": 19, "correct": 17, "error": 2, "avg": 84.4, "high_severity": 1}
+    ]
+  },
+  "cases": [
+    {"id": "QC001", "scene_major": "售后退款", "risk_scene": "破损退款", "risk_level": "高", "user_question": "买的手机激活了还能7天无理由退吗？", "ai_answer": "手机属于一经激活或试用后价值贬损较大的商品，激活后不支持7天无理由退货。若商品存在非人为损坏的性能故障，可走质量问题售后。", "standard_answer": "激活后的七日无理由退货需结合平台及商品具体规则判断；不能概括为所有激活手机一律不支持；若存在非人为性能故障，应按质量问题处理。", "ground_truth_source": "京东手机、数码类售后规则 + 《消费者权益保护法》第25条", "source_type": "平台官方规则 + 法律法规", "scope": "京东手机/数码类商品；以商品详情页及平台规则为准", "validation_target": "特殊商品规则判断 + 法律边界", "error_type": "无", "badcase_category": "无", "scores": {"classification": 16, "risk": 20, "evidence": 16, "boundary": 20, "human": 18, "resolution": 16, "raw_total": 106, "total_100": 88.3}, "high_severity": "否", "judgment": "正确", "audit_note": "\"激活后不支持\"过于绝对，需改为商品/平台规则判断。"},
+    {"id": "QC002", "scene_major": "售后退款", "risk_scene": "价保补差", "risk_level": "高", "user_question": "退款申请成功后多久到账？", "ai_answer": "退款原路退回您的支付账户。京东处理周期一般为1个工作日，银行卡1-3个工作日，支付宝/微信1-2个工作日，白条优先恢复额度。", "standard_answer": "退款通常按原支付路径处理；具体处理/到账时间以订单、支付渠道和平台实际规则为准，不应统一承诺固定时效。", "ground_truth_source": "京东退款/售后帮助中心", "source_type": "官方流程/帮助中心", "scope": "京东订单退款场景", "validation_target": "退款路径 + 时效边界 + 防止固定承诺", "error_type": "无", "badcase_category": "无", "scores": {"classification": 20, "risk": 20, "evidence": 20, "boundary": 20, "human": 18, "resolution": 20, "raw_total": 118, "total_100": 98.3}, "high_severity": "否", "judgment": "正确", "audit_note": "原回答含具体时效数字，应有对应官方依据或降级为条件描述。"},
+    {"id": "QC003", "scene_major": "售后退款", "risk_scene": "破损退款", "risk_level": "高", "user_question": "商家拒绝我的售后申请怎么办？", "ai_answer": "当前知识库无法确认针对商家拒绝售后申请的具体处理流程或申诉渠道。建议您联系京东人工客服获取帮助。", "standard_answer": "查看售后详情页拒绝原因；若页面提供平台介入/升级入口，按页面提示提交相关凭证；具体以当时页面规则为准。", "ground_truth_source": "京东售后服务总则", "source_type": "官方流程/帮助中心", "scope": "京东售后申请被拒绝", "validation_target": "售后介入流程召回 + 问题解决", "error_type": "知识库缺失", "badcase_category": "流程缺失", "scores": {"classification": 12, "risk": 12, "evidence": 5, "boundary": 12, "human": 15, "resolution": 5, "raw_total": 61, "total_100": 50.8}, "high_severity": "否", "judgment": "错误", "audit_note": "不要把\"申请京东介入\"按钮名称写死，以当前页面入口为准。"}
+  ]
+}
